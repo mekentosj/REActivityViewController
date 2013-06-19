@@ -46,6 +46,7 @@
         NSString *text = [userInfo objectForKey:@"text"];
         UIImage *image = [userInfo objectForKey:@"image"];
         NSURL *url = [userInfo objectForKey:@"url"];
+		NSArray *attachments = [userInfo objectForKey:@"attachments"];
         
         [activityViewController dismissViewControllerAnimated:YES completion:^{
             MFMailComposeViewController *mailComposeViewController = [[MFMailComposeViewController alloc] init];
@@ -67,6 +68,16 @@
 				
 				if (subject)
 					[mailComposeViewController setSubject:subject];
+				
+				if (attachments){
+						[attachments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+							
+							NSData *attachmentData = [NSData dataWithContentsOfFile:obj];
+							if (attachmentData){
+								[mailComposeViewController addAttachmentData:attachmentData mimeType:@"application/pdf" fileName:[NSString stringWithFormat:@"%@.pdf", subject]];
+							}
+						}];
+				}
 				
 				[activityViewController.presentingController presentViewController:mailComposeViewController animated:YES completion:nil];
 			}
