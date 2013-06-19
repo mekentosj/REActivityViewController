@@ -63,7 +63,11 @@
                 }
             };
             
-            [pc presentAnimated:YES completionHandler:completionHandler];
+			if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
+					[pc presentAnimated:YES completionHandler:completionHandler];
+			} else {
+				[pc presentFromRect:CGRectMake(0, 0, 1, 1) inView:[[[[UIApplication sharedApplication] keyWindow] rootViewController] view] animated:YES completionHandler:completionHandler];
+			}
         }];
     };
     
